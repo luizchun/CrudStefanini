@@ -25,6 +25,29 @@ namespace Example.API.Models
             UF = uF;
         }
 
+        public static City Create(string name, string uf)
+        {
+            if (name == null)
+                throw new ArgumentException("Invalid " + nameof(name));
+
+            if (uf == null)
+                throw new ArgumentException("Invalid " + nameof(uf));
+
+            return new City(name, uf);
+        }
+
+        public void Update(string name, string uf)
+        {
+            if (name != null)
+                Name = name;
+
+            if (uf != null)
+                UF = uf;
+        }
+
+
+
+
 
     }
 }

@@ -1,11 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Example.API.Models.Exceptions;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Example.API.Models
 {
     public class People
     {
-        [Required]
+        public City City { get; set; }
+
+        [Key]
         public int ID { get; set; }
 
         [Required]
@@ -23,7 +26,7 @@ namespace Example.API.Models
         [Required]
         [StringLength(3)]
         public  int Age  { get; set; }
-
+        
         public People()
         {
         }
@@ -34,6 +37,37 @@ namespace Example.API.Models
             CPF = cpf;
             ID_City = id_city;
             Age = age;
+        }
+        public static People Create(int cityId, string name, string cpf, int age)
+        {
+            if (name == null)
+                throw new ArgumentException("Invalid " + nameof(name));
+
+            if (cpf == null)
+                throw new ArgumentException("Invalid " + nameof(cpf));
+
+            if (age == 0)
+                throw new ArgumentException("Invalid " + nameof(age));
+
+
+            return new People(name, cpf, cityId, age);
+        }
+
+        public void Update(int cityId, string name, string cpf, int age)
+        {
+            ID_City = cityId;
+
+            if (name != null)
+                Name = name;
+
+            if (cpf != null)
+                CPF = cpf;
+
+            if (age > 50)
+                throw new InvalidAgeExceptions();
+
+            if (age != 0)
+                Age = age;
         }
 
 

@@ -1,6 +1,5 @@
 using Example.API.Data;
-using Example.Application.ExampleService.Service;
-using Example.Infra.Data;
+using Example.API.Services.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IExampleService, ExampleService>();
+builder.Services.AddScoped<ICityService, CityService>();
+builder.Services.AddScoped<IPeopleService, PeopleService>();
 builder.Services.AddDbContext<DataContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
@@ -27,7 +27,7 @@ if (app.Environment.IsDevelopment())
 
 using (var scope = app.Services.CreateScope())
 {
-    var dataContext = scope.ServiceProvider.GetRequiredService<ExampleContext>();
+    var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
     dataContext.Database.Migrate();
 }
 
